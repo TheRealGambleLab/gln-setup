@@ -1,0 +1,27 @@
+[project]
+name = "gln-setup"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Matthew Gamble", email = "matthew.gamble@einsteinmed.edu"},
+]
+dependencies = [
+    "typer>=0.12.5",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project.scripts]
+gln-setup = "gln_setup.cli:app"
+
+[project.entry-points."gln.plugin.group"]
+setup = "gln_setup.cli:app"
+
+
+[tool.pdm]
+distribution = true
