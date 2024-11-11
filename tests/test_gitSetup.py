@@ -7,7 +7,7 @@ from typing import IO
 from typer.testing import CliRunner
 
 from gln_setup.cli import app
-from gln_setup.setupUtil import GitInfo
+from gln_setup.gitSetup import GitInfo
 
 
 class TestGitConfig(unittest.TestCase):

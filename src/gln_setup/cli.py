@@ -6,7 +6,9 @@ import tomllib
 
 import typer
 
-from .setupUtil import GitInfo
+from .gitSetup import GitInfo
+from .dependencySetup import install_dependencies
+from .sshSetup import SSHkey
 
 app = typer.Typer()
 
@@ -27,7 +29,7 @@ def main(
 
 @app.command()
 def git(
-    ctx: typer.Context,
+    ctx: typer.Context, #is this needed?
     name: Annotated[
         Optional[str],
         typer.Option(help="enter your first and last name (e.g. 'John Doe')")
@@ -51,3 +53,35 @@ def git(
     gi.set_name(name, force)
     gi.set_email(email, force)
         
+@app.command()
+def install_deps(
+    ctx: typer.Context, #is this needed?
+) -> None:
+    install_dependencies()
+
+#TODO: Need enum for key gen protocol
+@app.command()
+def ssh_key(
+    ctx: typer.Context,
+    comment: Annotated[str, typer.Argument(help="short comment to include in public key file. If targeting git@github.com, the comment, must be an email associated with your github account.")],
+    name: Annotated[str, typer.Argument(help="a suitable name for the ssh-key")],
+    protocol: Annotated[str, typer.Option(help="key generation method")] = "ed25519",
+    target: Annotated[Optional[str], typer.Argument(help="path to a remote server. If given, an attempt to send the public key will be made.")] = None,
+) -> None:
+    #TODO: I think this should be just an ssh command that can create an ssh key, setup the config for ssh and send the key the target.
+    if path.exists():
+        raise ValueError(f"{path} already exists")
+    key = SSHkey(name=name, protocol=protocol, comment=comment,)
+    key.create()
+    if target is not None:
+        key.add_to_config(target)
+        key.send_to_server(target)
+
+@app.command()
+def gln_config(
+    ctx: typer.Context,
+) -> None:
+    #TODO: What do I really need to add. RIA should control [[ria]], index should control [[query]] and index and template should control templates. The question is, do those each have a setup command in their groups, or do I collect them here and write the appropriate section??
+    pass
+
+
