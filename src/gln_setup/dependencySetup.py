@@ -3,7 +3,7 @@ import platform
 import shutil
 import sys
 from dataclasses import dataclass, field
-from subprocess import run, CalledProcessError
+from subprocess import run, CalledProcessError, PIPE, DEVNULL
 import json
 from warnings import warn
 from typing import Optional, Protocol
