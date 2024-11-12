@@ -26,14 +26,14 @@ class Dependency(Protocol):
 
     @property
     def is_installed(self) -> bool:
-        return bool(shutil.which(name))
+        return bool(shutil.which(self.name))
 
     def install(self) -> None:
         if self.is_installed:
             return
         for pm in self.packageManagers:
             try:
-                pm.install_app(packageName)
+                pm.install_app(self.name)
                 if self.is_installed:
                     return
             except CalledProcessError:
