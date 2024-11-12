@@ -22,7 +22,7 @@ class SSHkey:
         if self.name is None:
             self.name = "_".join(self.key_path.name.split("_")[2:])
         elif self.key_path is None:
-            self.key_path = Path(f"~/.ssh/id_{self.protocol}_{name}")
+            self.key_path = Path(f"~/.ssh/id_{self.protocol}_{self.name}")
         self.key_path = self.key_path.expanduser()
         
     def create(self):
