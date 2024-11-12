@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import Annotated, Optional
-from types import SimpleNamespace
 from warnings import warn
 import tomllib
 
@@ -23,9 +22,7 @@ def main(
     """
     Plugin for the gln to automte system setup.
     """
-    if not hasattr(ctx, "obj") or ctx.obj is None or not hasattr(ctx.obj, "config"):
-        with configPath.open("rb") as file:
-            ctx.obj = SimpleNamespace(config=tomllib.load(file))
+    pass
 
 @app.command()
 def git(
