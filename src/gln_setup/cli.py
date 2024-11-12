@@ -65,9 +65,6 @@ def ssh_key(
     protocol: Annotated[str, typer.Option(help="key generation method")] = "ed25519",
     target: Annotated[Optional[str], typer.Argument(help="path to a remote server. If given, an attempt to send the public key will be made.")] = None,
 ) -> None:
-    #TODO: I think this should be just an ssh command that can create an ssh key, setup the config for ssh and send the key the target.
-    if path.exists():
-        raise ValueError(f"{path} already exists")
     key = SSHkey(name=name, protocol=protocol, comment=comment,)
     key.create()
     if target is not None:
