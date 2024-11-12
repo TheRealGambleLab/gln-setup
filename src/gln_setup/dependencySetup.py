@@ -14,7 +14,8 @@ class PackageManager(Protocol):
 
     @property
     def is_pm_installed(self) -> bool:
-        return bool(shutil.which(name))
+        return bool(shutil.which(self.name))
+    #NOTE: if it can be installed then install_app should also install the package manager.
 
     def install_app(self, app_name: str) -> None:
         pass
