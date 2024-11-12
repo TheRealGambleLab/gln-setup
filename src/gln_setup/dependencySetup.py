@@ -215,7 +215,7 @@ class GitHubCli(Dependency):
                 check=True,
             )
             wget_proc = run(
-                ["wget", "-qO-" "https://cli.github.com/packages/githubcli-archive-keyring.gpg"],
+                ["wget", "-qO-", "https://cli.github.com/packages/githubcli-archive-keyring.gpg"],
                 check=True,
                 stdout=PIPE,
             )
