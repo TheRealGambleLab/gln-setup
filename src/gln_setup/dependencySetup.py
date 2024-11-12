@@ -263,7 +263,7 @@ class Pdm(Dependency):
     name: str = "pdm"
     packageManagers: list[PackageManager] = field(default_factory = lambda: [Pipx(),])
 
-def install_dependencies(self, dependencies: list[Dependency] = [P7zip(), Git(), GitAnnex(), Rclone(), GitAnnexRemoteRclone(), Wget(), GitHubCli(), Datalad(), Pdm(),]) -> None:
+def install_dependencies(dependencies: list[Dependency] = [P7zip(), Git(), GitAnnex(), Rclone(), GitAnnexRemoteRclone(), Wget(), GitHubCli(), Datalad(), Pdm(),]) -> None:
     for dependency in dependencies:
         dependency.install()
 
