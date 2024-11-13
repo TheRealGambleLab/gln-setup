@@ -30,12 +30,12 @@ class SSHkey:
         if self.key_path.exists() and not self.force:
             raise ValueError(f"{key_path} aleady exists and force not set.")
         cmd = ['ssh-keygen', '-q', '-t', self.protocol, '-C', self.comment, '-f', str(self.key_path), '-N', self.passphrase]
+        print(" ".join(cmd))
         if self.protocol == "rsa":
             cmd += ['-b', str(self.byte_length)]
         #warn("Reminder: it is best to not set a passphrase (just push enter)")
         run(
             cmd,
-            shell=True,
             check=True,
         )
 
@@ -45,19 +45,16 @@ class SSHkey:
             return
         run(
             ["ssh-copy-id", "-i", str(self.key_path.with_suffix('.pub')), self.target,],
-            shell=True,
             check=True,
         )
 
     def send_to_github(self):
         run(
             ["gh", "auth", "login", "-p", "ssh", "-h", "github.com", "-w"],
-            shell=True,
             check=True,
         )
         run(
             ["gh", "ssh-key", "add", "-t", self.name, self.key_path],
-            shell=True,
             check=True,
         )
 
