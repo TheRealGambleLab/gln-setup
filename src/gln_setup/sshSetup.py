@@ -14,6 +14,7 @@ class SSHkey:
     byte_length: int = 4096 #only used for rsa
     force: bool = False
     key_path: Optional[Path] = None
+    passphrase: str = ""
 
     def __post_init__(self):
         #set key_path
@@ -28,7 +29,7 @@ class SSHkey:
     def create(self):
         if self.key_path.exists() and not self.force:
             raise ValueError(f"{key_path} aleady exists and force not set.")
-        cmd = ['ssh-keygen', '-t', self.protocol, '-C', self.comment, '-f', str(self.key_path)]
+        cmd = ['ssh-keygen', '-q', '-t', self.protocol, '-C', self.comment, '-f', str(self.key_path)]
         if self.protocol == "rsa":
             cmd += ['-b', str(self.byte_length)]
         warn("Reminder: it is best to not set a passphrase (just push enter)")
