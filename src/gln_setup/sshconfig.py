@@ -35,28 +35,28 @@ class Section(MutableMapping):
     lines: list[Line] = field(default_factory = list)
 
     def __getitem__(self, key):
-        for line in lines:
+        for line in self.lines:
             if line.key == key:
                 return line.value
         raise KeyError(key)
             
     def __setitem__(self, key, value):
-        for i, line in enumerate(lines):
+        for i, line in enumerate(self.lines):
             if line.key == key:
-                lines[i] = Line(f"{key} {value}")
+                self.lines[i] = Line(f"{key} {value}")
                 return
         lines.append(Line(f"{key} {value}"))
 
     def __delitem__(self, key):
-        for i, line in enumerate(lines):
+        for i, line in enumerate(self.lines):
             if line.key == key:
-                lines = lines[:i] + lines[i+1:]
+                self.lines = lines[:i] + lines[i+1:]
                 return
         raise KeyError(key)
 
     def __iter__(self):
         keys = set()
-        for line in lines:
+        for line in self.lines:
             if line.key:
                 keys.add(line.key)
         return iter(keys)
@@ -66,12 +66,12 @@ class Section(MutableMapping):
 
     @property
     def host(self):
-        return lines[0].value
+        return self.lines[0].value
 
     def __repr__(self):
-        if len(lines) == 1:
-            return str(lines[0])
-        return '\n'.join(lines[0:1] + ["    " + str(line) for line in lines])
+        if len(self.lines) == 1:
+            return str(self.lines[0])
+        return '\n'.join(self.lines[0:1] + ["    " + str(line) for line in self.lines])
         
 
 @dataclass
