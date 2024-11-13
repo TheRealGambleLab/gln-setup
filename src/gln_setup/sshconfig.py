@@ -126,7 +126,7 @@ class SSHConfig(MutableMapping):
         raise KeyError(key)
 
     def __repr__(self) -> str:
-        return "\n".join([self.preamble] + [str(section) for section in self.sections])
+        return "\n".join(self.preamble + [str(section) for section in self.sections])
 
 def load(path: str) -> SSHConfig:
     if not path.expanduser().exists():
