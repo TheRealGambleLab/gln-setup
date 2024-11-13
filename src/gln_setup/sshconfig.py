@@ -45,12 +45,12 @@ class Section(MutableMapping):
             if line.key == key:
                 self.lines[i] = Line(f"{key} {value}")
                 return
-        lines.append(Line(f"{key} {value}"))
+        self.lines.append(Line(f"{key} {value}"))
 
     def __delitem__(self, key):
         for i, line in enumerate(self.lines):
             if line.key == key:
-                self.lines = lines[:i] + lines[i+1:]
+                self.lines = self.lines[:i] + self.lines[i+1:]
                 return
         raise KeyError(key)
 
