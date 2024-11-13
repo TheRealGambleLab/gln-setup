@@ -130,7 +130,7 @@ class SSHConfig(MutableMapping):
 
 def load(path: str) -> SSHConfig:
     if not path.expanduser().exists():
-        return ""
+        return loads("")
     return loads(path.expanduser().read_text())
 
 def loads(text: str) -> SSHConfig:

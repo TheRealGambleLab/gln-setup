@@ -28,7 +28,7 @@ class SSHkey:
         
     def create(self):
         if self.key_path.exists() and not self.force:
-            raise ValueError(f"{key_path} aleady exists and force not set.")
+            raise ValueError(f"{self.key_path} aleady exists and force not set.")
         cmd = ['ssh-keygen', '-q', '-t', self.protocol, '-C', self.comment, '-f', str(self.key_path), '-N', self.passphrase]
         print(" ".join(cmd))
         if self.protocol == "rsa":
