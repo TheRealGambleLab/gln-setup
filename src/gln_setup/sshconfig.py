@@ -81,8 +81,6 @@ class SSHConfig(MutableMapping):
     __keys: set[str] = field(default_factory = set, init = False)
 
     def __post_init__(self):
-        if path is not None:
-            self.__read()
         for section in self.sections:
             self.__keys.add(section.host)
 
@@ -131,6 +129,8 @@ class SSHConfig(MutableMapping):
         return "\n".join([preamble] + [str(section) for section in sections])
 
 def load(path: str) -> SSHConfig:
+    if not path.expanduser().exists():
+        return ""
     return loads(path.expanduser().read_text())
 
 def loads(text: str) -> SSHConfig:
@@ -148,7 +148,7 @@ def loads(text: str) -> SSHConfig:
     return SSHConfig(sections, preamble)
 
 def dump(config: SSHConfig, path: str) -> None:
-    path.write_text(dumps(config))
+    path.expanduser().write_text(dumps(config))
 
 def dumps(config: SSHConfig) -> str:
     return str(config)
