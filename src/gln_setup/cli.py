@@ -64,8 +64,9 @@ def ssh_key(
     name: Annotated[str, typer.Argument(help="a suitable name for the ssh-key")],
     protocol: Annotated[str, typer.Option(help="key generation method")] = "ed25519",
     target: Annotated[Optional[str], typer.Argument(help="path to a remote server. If given, an attempt to send the public key will be made.")] = None,
+    passphrase: Annotated[str, typer.Option("-p", help="set a passphrase for the key. default is no passphrase".)] = "",
 ) -> None:
-    key = SSHkey(name=name, protocol=protocol, comment=comment,)
+    key = SSHkey(name=name, protocol=protocol, comment=comment, passphrase=passphrase)
     key.create()
     if target is not None:
         key.add_to_config(target)

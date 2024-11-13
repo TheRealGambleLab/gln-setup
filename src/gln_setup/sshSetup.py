@@ -29,10 +29,10 @@ class SSHkey:
     def create(self):
         if self.key_path.exists() and not self.force:
             raise ValueError(f"{key_path} aleady exists and force not set.")
-        cmd = ['ssh-keygen', '-q', '-t', self.protocol, '-C', self.comment, '-f', str(self.key_path)]
+        cmd = ['ssh-keygen', '-q', '-t', self.protocol, '-C', self.comment, '-f', str(self.key_path), '-N', passphrase]
         if self.protocol == "rsa":
             cmd += ['-b', str(self.byte_length)]
-        warn("Reminder: it is best to not set a passphrase (just push enter)")
+        #warn("Reminder: it is best to not set a passphrase (just push enter)")
         run(
             cmd,
             shell=True,
