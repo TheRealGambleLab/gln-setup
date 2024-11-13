@@ -61,7 +61,7 @@ class SSHkey:
     def add_to_config(self, host: str, path: Path = Path("~/.ssh/config"), **hostOptions: dict[str,str]):
         path = path.expanduser()
         config = sshconfig.load(path)
-        section = config.get(host, Section())
+        section = config.get(host, sshconfig.Section())
         section['host'] = host
         for k,v in hostOptions:
             section[k] = v
