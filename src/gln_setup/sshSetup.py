@@ -44,7 +44,7 @@ class SSHkey:
             self.sendKeytoGithub()
             return
         run(
-            ["ssh-copy-id", "-i", str(self.key_path.with_suffix('.pub')), self.target,],
+            ["ssh-copy-id", "-i", str(self.key_path.with_suffix('.pub')), target,],
             check=True,
         )
 
