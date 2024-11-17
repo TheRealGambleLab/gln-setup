@@ -41,7 +41,7 @@ class SSHkey:
 
     def send_to_server(self, target: str):
         if target == "git@github.com":
-            self.sendKeytoGithub()
+            self.send_to_github()
             return
         run(
             ["ssh-copy-id", "-i", str(self.key_path.with_suffix('.pub')), target,],
