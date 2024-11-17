@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Annotated, Optional
 from warnings import warn
 import tomllib
+from subprocess import run, CalledProcessError
 
 import typer
 
@@ -73,10 +74,24 @@ def ssh_key(
         key.send_to_server(target)
 
 @app.command()
-def gln_config(
+def gln_install(
     ctx: typer.Context,
+    python_path: Annotated[Optional[Path], typer.Option("--python", "-p", help="path to the python executable")] = None,
 ) -> None:
-    #TODO: What do I really need to add. RIA should control [[ria]], index should control [[query]] and index and template should control templates. The question is, do those each have a setup command in their groups, or do I collect them here and write the appropriate section??
-    pass
+    """
+    An ssh-key to a github account with access to TheRealGambleLab must be present and shared with github before installing (Can use ssh-key command). pipx must also be installed (can use install-deps command).
+    """
+
+    cmd = ["pipx", "install",]
+    if python_path:
+        cmd += ["--python", python_path]
+    cmd += ["git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"]
+    run(
+        cmd,
+        check = True,
+    )
+
+
+    
 
 

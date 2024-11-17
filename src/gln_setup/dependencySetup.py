@@ -20,6 +20,7 @@ class PackageManager(Protocol):
     def install_app(self, app_name: str) -> None:
         pass
 
+
 class Dependency(Protocol):
 
     packageManagers: list[PackageManager] = field(default_factory = lambda: [AptGet(), Brew(), Pipx(), Conda()])
