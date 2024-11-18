@@ -69,7 +69,7 @@ class SSHkey:
         #section['IdentityFile'] = self.key_path
         #sshconfig.dump(config, path)
         config = read_ssh_config(path) if path.exists() else empty_ssh_config_file()
-        if host in config.hosts:
+        if host in config.hosts():
             config.set(host, IdentityFile = str(self.key_path), **hostOptions)
         else:
             config.add(host, IdentityFile = str(self.key_path), **hostOptions)
