@@ -9,14 +9,15 @@ tags: [code, gln, plugin, gln-v3, python]
 
 ## TODO
 
-- [ ] automate the generation of the gln config file
-- [ ] automate git setup
-- [ ] automate giti-annex install
-- [ ] automate rclone install
-- [ ] automate git-annex-remote-rclone install
-- [ ] automate datalad install
-- [ ] automate ssh-key setup for HPC
-- [ ] automate ssh-key setup for github.com
-- [ ] automate gh install
-- [ ] automate pdm install
-- [ ] automaate gh repo setup?? This goes elsewhere?? Is there a github extension like there is a ria extension?
+- [x] automate git setup
+- [x] automate git-annex install
+- [x] automate rclone install
+- [x] automate git-annex-remote-rclone install
+- [x] automate datalad install
+- [x] automate ssh-key setup for HPC
+- [x] automate ssh-key setup for github.com
+- [x] automate gh install
+- [x] automate pdm install
+- [ ] automate pipx install??
+- [x] automaate gh repo setup?? This goes elsewhere?? Is there a github extension like there is a ria extension?
+- [ ] fix bug where setting up an ssh-key for github leads to erasing of the .ssh/config. WTF
