@@ -55,7 +55,7 @@ class SSHkey:
             check=True,
         )
         run(
-            ["gh", "ssh-key", "add", "-t", self.name, self.key_path],
+            ["gh", "ssh-key", "add", "-t", self.name, str(self.key_path.expanduser())],
             check=True,
         )
 
