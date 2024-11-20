@@ -65,6 +65,6 @@ class SSHkey:
             options["HostName"] = host
         options["IdentityFile"] = str(self.key_path)
         config = read_ssh_config(path) if path.exists() else empty_ssh_config_file()
-        func = config.set if host_name in config.hosts() else config.add
+        func = config.set if options["HostName"] in config.hosts() else config.add
         func(host, **options)
         config.write(path)
