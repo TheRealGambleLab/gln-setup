@@ -189,7 +189,7 @@ class Uv(PackageManager, Dependency):
             return
         with urllib.request.urlopen("https://astral.sh/uv/install.sh") as response:
             script_content = response.read().decode("utf-8")
-        run(["sh", input=script_content, text=True)
+        run(["sh"], input=script_content, text=True)
 
     def install_app(self, app_name) -> None:
         self.install()
