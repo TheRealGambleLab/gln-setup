@@ -76,22 +76,15 @@ def ssh_key(
 @app.command()
 def gln_install(
     ctx: typer.Context,
-    python_path: Annotated[Optional[Path], typer.Option("--python", "-p", help="path to the python executable")] = None,
+    python: Annotated[str, typer.Option("--python", "-p", help="Python version, (e.g. 3.12)")] = "3.12",
 ) -> None:
     """
-    An ssh-key to a github account with access to TheRealGambleLab must be present and shared with github before installing (Can use ssh-key command). pipx must also be installed (can use install-deps command).
+    An ssh-key to a github account with access to TheRealGambleLab must be present and shared with github before installing (Can use ssh-key command). uv must also be installed (can use install-deps command).
     """
 
-    cmd = ["pipx", "install",]
-    if python_path:
-        cmd += ["--python", python_path]
-    cmd += ["git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"]
     run(
-        cmd,
+        ["uv", "tool", "install", "--python", python, "git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"],
         check = True,
     )
-
-
     
-
 

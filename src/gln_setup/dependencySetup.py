@@ -15,8 +15,8 @@ class PackageManager(Protocol):
     @property
     def is_pm_installed(self) -> bool:
         return bool(shutil.which(self.name))
-    #NOTE: if it can be installed then install_app should also install the package manager.
 
+    #NOTE: if it can be installed then install_app should also install the package manager.
     def install_app(self, app_name: str) -> None:
         pass
 
@@ -64,7 +64,7 @@ class Conda(PackageManager):
         envList = [
             e for e in json.loads(
                 run(
-                    ['conda', 'env', 'list', '--json'],
+                    [self.name, 'env', 'list', '--json'],
                     check=True,
                     capture_output=True,
                 ).stdout
@@ -97,7 +97,7 @@ class Conda(PackageManager):
 
     def init(self) -> None:
         run(
-            ['conda', 'init'],
+            [self.name, 'init'],
             shell=True,
             check=True,
         )
@@ -106,7 +106,7 @@ class Conda(PackageManager):
         if is_env_installed:
             return
         run(
-            ['conda', 'create', '-n', self.env_name, "python=" + self.python_version],
+            [self.name, 'create', '-n', self.env_name, "python=" + self.python_version],
             shell=True,
             check=True,
         )
@@ -124,7 +124,7 @@ class Conda(PackageManager):
         self.install()
         self.install_env()
         run(
-            ["conda", "install", "-c", "conda-forge", "-y", "-n", self.env_name, app_name],
+            [self.name, "install", "-c", "conda-forge", "-y", "-n", self.env_name, app_name],
             shell=True,
             check=True,
         )
@@ -138,7 +138,7 @@ class AptGet(PackageManager):
     
     def install_app(self, app_name: str) -> None:
         run(
-            ['sudo', pm_name, 'install', '-y', app_name],
+            ['sudo', self.name, 'install', '-y', app_name],
             shell=True,
             check=True,
         )
@@ -149,7 +149,7 @@ class Brew(PackageManager):
 
     def install_app(self, app_name: str) -> None:
         run(
-            [pm_name, 'install', app_name],
+            [self.name, 'install', app_name],
             shell=True,
             check=True,
         )
@@ -160,24 +160,44 @@ class Pipx(PackageManager, Dependency):
     packageManagers: list[PackageManager] = field(default_factory = lambda: [Conda(), AptGet(), Brew()])
 
     def install(self) -> None:
+        if self.is_installed: return
         super().install()
         self.ensurepath()
 
     def ensurepath(self) -> None:
         run(
-            ['pipx', 'ensurepath'],
+            [self.name, 'ensurepath'],
             shell=True,
             check=True,
         )
 
     def install_app(self, app_name) -> None:
-        if not self.is_installed:
-            self.install_pm()
         run(
-            ['pipx', 'install', '--python', sys.executable, app_name],
+            [self.name, 'install', '--python', sys.executable, app_name],
             shell=True,
             check=True,
         )
+
+@dataclass
+class Uv(PackageManager, Dependency):
+    name: str = "uv"
+    packageMangers: list[PackageManger] = field(default_factor = list)
+    python_version: str = "3.12"
+
+    def install(self) -> None:
+        if self.is_installed:
+            return
+        with urllib.request.urlopen("https://astral.sh/uv/install.sh") as response:
+            script_content = response.read().decode("utf-8")
+        run(["sh", input=script_content, text=True)
+
+    def install_app(self, app_name) -> None:
+        self.install()
+        run(
+            [self.name, 'tool', 'install', '--python', python_version, app_name],
+            check=true
+        )
+
         
 @dataclass
 class P7zip(Dependency):
@@ -253,7 +273,7 @@ class GitHubCli(Dependency):
 @dataclass
 class Datalad(Dependency):
     name: str = "datalad"
-    packageManagers: list[PackageManager] = field(default_factory = lambda: [Pipx(), Conda(), AptGet(), Brew()])
+    packageManagers: list[PackageManager] = field(default_factory = lambda: [Uv(), Pipx(), Conda(), AptGet(), Brew()])
 
 @dataclass
 class Wget(Dependency):
@@ -263,11 +283,9 @@ class Wget(Dependency):
 @dataclass
 class Pdm(Dependency):
     name: str = "pdm"
-    packageManagers: list[PackageManager] = field(default_factory = lambda: [Pipx(),])
+    packageManagers: list[PackageManager] = field(default_factory = lambda: [Uv(), Pipx(),])
 
-def install_dependencies(dependencies: list[Dependency] = [P7zip(), Git(), GitAnnex(), Rclone(), GitAnnexRemoteRclone(), Wget(), GitHubCli(), Datalad(), Pdm(),]) -> None:
+def install_dependencies(dependencies: list[Dependency] = [P7zip(), Git(), GitAnnex(), Rclone(), GitAnnexRemoteRclone(), Wget(), GitHubCli(), Uv(),]) -> None:
     for dependency in dependencies:
         dependency.install()
-
-    
 

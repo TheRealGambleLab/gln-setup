@@ -4,7 +4,7 @@ from typing import Optional, ClassVar
 from warnings import warn
 from dataclasses import dataclass
 
-from . import sshconfig
+#from . import sshconfig
 from sshconf import read_ssh_config, empty_ssh_config_file
 
 @dataclass
@@ -50,27 +50,21 @@ class SSHkey:
         )
 
     def send_to_github(self):
+        print("follow the instructions carefully to load your new ssh-key to github...")
         run(
             ["gh", "auth", "login", "-p", "ssh", "-h", "github.com", "-w"],
-            check=True,
-        )
-        run(
-            ["gh", "ssh-key", "add", "-t", self.name, str(self.key_path.expanduser())],
             check=True,
         )
 
     def add_to_config(self, host: str, path: Path = Path("~/.ssh/config"), **hostOptions: dict[str,str]):
         path = path.expanduser()
-        #config = sshconfig.load(path)
-        #section = config.get(host, sshconfig.Section())
-        #section['host'] = host
-        #for k,v in hostOptions:
-        #    section[k] = v
-        #section['IdentityFile'] = self.key_path
-        #sshconfig.dump(config, path)
-        config = read_ssh_config(path) if path.exists() else empty_ssh_config_file()
-        if host in config.hosts():
-            config.set(host, IdentityFile = str(self.key_path), **hostOptions)
+        options = dict(hostOptions)
+        if "@" in host:
+            options["User"], options["HostName"] = host.split("@")
         else:
-            config.add(host, IdentityFile = str(self.key_path), **hostOptions)
+            options["HostName"] = host
+        options["IdentityFile"] = str(self.key_path)
+        config = read_ssh_config(path) if path.exists() else empty_ssh_config_file()
+        func = config.set if host_name in config.hosts() else config.add
+        func(host, **options)
         config.write(path)
