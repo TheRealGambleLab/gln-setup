@@ -181,7 +181,7 @@ class Pipx(PackageManager, Dependency):
 @dataclass
 class Uv(PackageManager, Dependency):
     name: str = "uv"
-    packageMangers: list[PackageManger] = field(default_factor = list)
+    packageMangers: list[PackageManger] = field(default_factory = list)
     python_version: str = "3.12"
 
     def install(self) -> None:
