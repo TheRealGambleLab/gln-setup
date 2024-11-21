@@ -78,16 +78,14 @@ class Conda(PackageManager):
     def install(self) -> None:
         if self.is_pm_installed:
             return
-        downloadCmd = ['wget', "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh", "-O", "~/miniconda3/miniconda.sh"] if platform.system().lower() == "linux" else ["curl", "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh", "-o", "~/miniconda3/miniconda.sh"],
+        downloadCmd = ['wget', "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh", "-O", "~/miniconda3/miniconda.sh"] if platform.system().lower() == "linux" else ["curl", "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh", "-o", "~/miniconda3/miniconda.sh"]
         Path("~/miniconda3").expanduser().mkdir(parents=True, exist_ok=True)
         run(
             downloadCmd,
-            shell=True,
             check=True,
         )
         run(
             ["bash", "~/miniconda3/miniconda.sh", "-b", "-u", "-p,", "~/miniconda3",],
-            shell=True,
             check=True,
         )
         Path("~/miniconda3/miniconda.sh").expanduser().unlink(missing_ok=True)
@@ -98,7 +96,6 @@ class Conda(PackageManager):
     def init(self) -> None:
         run(
             [self.name, 'init'],
-            shell=True,
             check=True,
         )
 
@@ -107,7 +104,6 @@ class Conda(PackageManager):
             return
         run(
             [self.name, 'create', '-n', self.env_name, "python=" + self.python_version],
-            shell=True,
             check=True,
         )
 
@@ -125,7 +121,6 @@ class Conda(PackageManager):
         self.install_env()
         run(
             [self.name, "install", "-c", "conda-forge", "-y", "-n", self.env_name, app_name],
-            shell=True,
             check=True,
         )
         if not bool(shutil.which(app_name)):
@@ -139,7 +134,6 @@ class AptGet(PackageManager):
     def install_app(self, app_name: str) -> None:
         run(
             ['sudo', self.name, 'install', '-y', app_name],
-            shell=True,
             check=True,
         )
 
@@ -150,7 +144,6 @@ class Brew(PackageManager):
     def install_app(self, app_name: str) -> None:
         run(
             [self.name, 'install', app_name],
-            shell=True,
             check=True,
         )
 
@@ -167,14 +160,12 @@ class Pipx(PackageManager, Dependency):
     def ensurepath(self) -> None:
         run(
             [self.name, 'ensurepath'],
-            shell=True,
             check=True,
         )
 
     def install_app(self, app_name) -> None:
         run(
             [self.name, 'install', '--python', sys.executable, app_name],
-            shell=True,
             check=True,
         )
 
@@ -189,7 +180,7 @@ class Uv(PackageManager, Dependency):
             return
         with urllib.request.urlopen("https://astral.sh/uv/install.sh") as response:
             script_content = response.read().decode("utf-8")
-        run(["sh"], input=script_content, text=True)
+        run(["sh"], input=script_content, text=True, check=True)
 
     def install_app(self, app_name) -> None:
         self.install()
