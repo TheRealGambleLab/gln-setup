@@ -76,7 +76,7 @@ class Conda(PackageManager):
             return None
 
     def install(self) -> None:
-        if self.is_installed:
+        if self.is_pm_installed:
             return
         downloadCmd = ['wget', "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh", "-O", "~/miniconda3/miniconda.sh"] if platform.system().lower() == "linux" else ["curl", "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh", "-o", "~/miniconda3/miniconda.sh"],
         Path("~/miniconda3").expanduser().mkdir(parent=True, exist_ok=True)
