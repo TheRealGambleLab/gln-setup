@@ -85,7 +85,7 @@ def gln_install(
 
     try:
         run(    
-            cmd + ["git+ssh://mgamble@mgamble.hpc.einsteinmed.edu/gs/gsfs0/users/Gamble%20Lab/ria/gamblelab/27b/f579f-abbb-44c7-9df2-f7af88306267#egg=gln[extensions]"],
+            cmd + ["git+ssh://mgamble@mgamble.hpc.einsteinmed.edu/gs/gsfs0/users/Gamble%20Lab/ria/gamblelab/27b/f579f-abbb-44c7-9df2-f7af88306267#egg=gln[hpc-extensions]"],
             check = True,
         )
     except CalledProcessError:
