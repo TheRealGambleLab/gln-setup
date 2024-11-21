@@ -2,6 +2,7 @@ from pathlib import Path
 import platform
 import shutil
 import sys
+import os
 from dataclasses import dataclass, field
 from subprocess import run, CalledProcessError, PIPE, DEVNULL
 import json
