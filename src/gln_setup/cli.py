@@ -81,10 +81,17 @@ def gln_install(
     """
     An ssh-key to a github account with access to TheRealGambleLab must be present and shared with github before installing (Can use ssh-key command). uv must also be installed (can use install-deps command).
     """
+    cmd = ["uv", "tool", "install", "--python", python,] 
 
-    run(
-        ["uv", "tool", "install", "--python", python, "git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"],
-        check = True,
-    )
-    
+    try:
+        run(    
+            cmd + ["git+ssh://mgamble@mgamble.hpc.einsteinmed.edu/gs/gsfs0/users/Gamble%20Lab/ria/gamblelab/27b/f579f-abbb-44c7-9df2-f7af88306267#egg=gln[extensions]"],
+            check = True,
+        )
+    except CalledProcessError:
+        cmd[-1] = 
+        run(
+            cmd + ["git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"],
+            check = True,
+        )
 
