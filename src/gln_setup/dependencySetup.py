@@ -38,7 +38,7 @@ class Dependency(Protocol):
                 pm.install_app(self.name)
                 if self.is_installed:
                     return
-            except CalledProcessError:
+            except (CalledProcessError, FileNotFoundError):
                 pass
             
 
