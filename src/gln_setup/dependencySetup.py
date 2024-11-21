@@ -56,7 +56,7 @@ class Conda(PackageManager):
     @property
     def is_env_installed(self) -> bool:
         return bool(
-            self.env_path()
+            self.env_path
         )
             
     @property
