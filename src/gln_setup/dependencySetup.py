@@ -208,7 +208,7 @@ class GitAnnex(Dependency):
 @dataclass
 class Rclone(Dependency):
     name: str = "rclone"
-    packageMangers: list[PackageManager] = field(default_factory = lambda: [AptGet(), Brew(), Conda()])
+    packageManagers: list[PackageManager] = field(default_factory = lambda: [AptGet(), Brew(), Conda()])
 
 @dataclass
 class GitAnnexRemoteRclone(Dependency):
