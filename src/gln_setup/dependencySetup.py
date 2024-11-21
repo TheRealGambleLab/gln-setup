@@ -100,7 +100,7 @@ class Conda(PackageManager):
         )
 
     def install_env(self) -> None:
-        if is_env_installed:
+        if self.is_env_installed:
             return
         run(
             [self.name, 'create', '-n', self.env_name, "python=" + self.python_version],
