@@ -89,9 +89,15 @@ def gln_install(
             check = True,
         )
     except CalledProcessError:
-        cmd[-1] = 
-        run(
-            cmd + ["git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"],
-            check = True,
-        )
+        try:
+            run(
+                cmd + ["git+file:///gs/gsfs0/users/Gamble%20Lab/ria/gamblelab/27b/f579f-abbb-44c7-9df2-f7af88306267#egg=gln[on-hpc-extensions]"],
+                check = True,
+            )
+        except CalledProcessError:
+            run(
+                cmd + ["git+ssh://git@github.com/TheRealGambleLab/gln#egg=gln[extensions]"],
+                check = True,
+            )
+
 
