@@ -61,13 +61,12 @@ def install_deps(
 @app.command()
 def ssh_key(
     ctx: typer.Context,
-    comment: Annotated[str, typer.Argument(help="short comment to include in public key file. If targeting git@github.com, the comment, must be an email associated with your github account.")],
-    name: Annotated[str, typer.Argument(help="a suitable name for the ssh-key")],
+    name: Annotated[str, typer.Argument(help="a suitable name for the ssh-key (e.g. hereToThere) so you will be able to identify it later.")],
     protocol: Annotated[str, typer.Option(help="key generation method")] = "ed25519",
     target: Annotated[Optional[str], typer.Argument(help="path to a remote server. If given, an attempt to send the public key will be made.")] = None,
     passphrase: Annotated[str, typer.Option("-p", help="set a passphrase for the key. default is no passphrase.")] = "",
 ) -> None:
-    key = SSHkey(name=name, protocol=protocol, comment=comment, passphrase=passphrase)
+    key = SSHkey(name=name, protocol=protocol, comment=name, passphrase=passphrase)
     key.create()
     if target is not None:
         key.add_to_config(target)
