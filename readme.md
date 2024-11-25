@@ -18,11 +18,13 @@ The most straightforward way to install gln-setup is with uv.
 
 `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
+This will work on your local machine or the cluster.
+
 See [https://docs.astral.sh/uv/getting-started/installation/#installation-methods]() for help.
 
 ### Install gln-setup
 
-uv tool install
+`uv tool install --python 3.12 https://github.com/TheRealGambleLab/gln-setup.git`
 
 ## 1. Install dependencies
 
@@ -32,7 +34,7 @@ The command tries to intall the necessary depedencies (if not already present on
 ## 2. Set up git
 
 You must tell git your name and email so that your commits can record that information.
-Run `gln-setup git --name John Doe --email john.doe@somewhere.com`, replacing the nonsense with your information.
+Run `gln-setup git --name "John Doe" --email john.doe@somewhere.com`, replacing the nonsense with your information.
 
 ## 3. Set up ssh keys
 
