@@ -5,7 +5,7 @@ participants: [Matthew Gamble]
 tags: [code, gln, plugin, gln-v3, python]
 ---
 
-# A plugin for gln-v3 to automate the setup for both required and optional programs and settings for gln to function.
+# gln-setup: A plugin for gln-v3 and a standalone cli to automate the setup for both required and optional programs and settings for gln to function.
 
 This is a tool to help automate the setup process for using gln.
 There are several non-python dependencies that must be taken care of before gln will work property.
