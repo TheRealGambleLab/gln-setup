@@ -75,6 +75,7 @@ def ssh_key(
 @app.command()
 def gln_install(
     ctx: typer.Context,
+    username: Annotated[Optional[str], typer.Option("--username", "-u", help="your username on the hpc.")] = None,
     python: Annotated[str, typer.Option("--python", "-p", help="Python version, (e.g. 3.12)")] = "3.12",
 ) -> None:
     """
@@ -84,7 +85,7 @@ def gln_install(
 
     try:
         run(    
-            cmd + ["git+ssh://mgamble@mgamble.hpc.einsteinmed.edu/gs/gsfs0/users/Gamble%20Lab/ria/gamblelab/27b/f579f-abbb-44c7-9df2-f7af88306267#egg=gln[hpc-extensions]"],
+            cmd + [f"git+ssh://{username}@{username}.hpc.einsteinmed.edu/gs/gsfs0/users/Gamble%20Lab/ria/gamblelab/27b/f579f-abbb-44c7-9df2-f7af88306267#egg=gln[hpc-extensions]"],
             check = True,
         )
     except CalledProcessError:
