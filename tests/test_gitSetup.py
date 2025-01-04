@@ -13,21 +13,21 @@ from gln_setup.gitSetup import GitInfo
 class TestGitConfig(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
-        self.name = 'John Doe'
-        self.email = 'john.doe@whoknows.edu'
+        self.name = "John Doe"
+        self.email = "john.doe@whoknows.edu"
         self.new_name = "Peter Griffen"
         self.new_email = "peter.griffen@familyguy.edu"
 
     def addInfoToFile(self, f: IO[str]):
         run(
-            ['git', 'config', '--file', f.name, 'user.name', self.name],
-            check = True
+            ["git", "config", "--file", f.name, "user.name", self.name],
+            check=True,
         )
         run(
-            ['git', 'config', '--file', f.name, 'user.email', self.email],
-            check = True
+            ["git", "config", "--file", f.name, "user.email", self.email],
+            check=True,
         )
-        
+
     def testGitInfoRetreival(self):
         with NamedTemporaryFile() as f:
             self.addInfoToFile(f)
@@ -52,15 +52,35 @@ class TestGitConfig(unittest.TestCase):
     def testGitInfoCli(self):
         with NamedTemporaryFile() as f:
             self.addInfoToFile(f)
-            result = self.runner.invoke(app, ['git', '--name', self.new_name, '--email', self.new_email, "--file", f.name])
+            result = self.runner.invoke(
+                app,
+                [
+                    "git",
+                    "--name",
+                    self.new_name,
+                    "--email",
+                    self.new_email,
+                    "--file",
+                    f.name,
+                ],
+            )
             self.assertEqual(result.exit_code, 0)
             gi = GitInfo(Path(f.name))
             self.assertEqual(self.name, gi.name)
             self.assertEqual(self.email, gi.email)
-            result2 = self.runner.invoke(app, ['git', '--name', self.new_name, '--email', self.new_email, "--force", "--file", f.name])
+            result2 = self.runner.invoke(
+                app,
+                [
+                    "git",
+                    "--name",
+                    self.new_name,
+                    "--email",
+                    self.new_email,
+                    "--force",
+                    "--file",
+                    f.name,
+                ],
+            )
             self.assertEqual(result2.exit_code, 0)
             self.assertEqual(self.new_name, gi.name)
             self.assertEqual(self.new_email, gi.email)
-            
-        
-
