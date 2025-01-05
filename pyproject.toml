@@ -20,9 +20,5 @@ gln-setup = "gln_setup.cli:app"
 [project.entry-points."gln.plugin.group"]
 setup = "gln_setup.cli:app"
 
-
-[tool.pdm]
-distribution = true
-
 [tool.ruff]
 line-length = 79
